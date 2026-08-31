@@ -1,74 +1,86 @@
-<p align="center">
-  <img src="./assets/banner.svg" alt="Claude Behavior Skill" width="100%" />
-</p>
+# Claude Behavior Skill
 
-<p align="center">
-  <a href="./README_zh.md">中文</a> · <a href="./SKILL.md">Skill</a> · <a href="./CLAUDE_STYLE_PROMPT.md">Plain prompt</a> · <a href="./EVALS.md">Tests</a>
-</p>
+A small experiment in making non-Claude models feel a little more like Claude to talk to.
 
-A small experiment in making **non-Claude models feel a little more like Claude to talk to**.
+It is mainly for GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, and local/open-weight models.
+It does **not** turn them into Claude. The idea is simpler than that: give them a better behavioral layer.
 
-I don't mean pretending the model *is* Claude. The goal is the part people usually notice in conversation: less automatic agreement, better handling of uncertainty, more willingness to push back, and a calmer response style.
+[中文说明](./README_zh.md) · [SKILL.md](./SKILL.md) · [Prompt version](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
 
-It is mainly meant for `GPT / ChatGPT`, `Grok`, `Gemini`, `DeepSeek`, `Qwen`, `GLM`, `Kimi`, and local models.
+![Banner](./assets/banner.svg)
 
-## What changes
+## What it tries to improve
 
-With the skill enabled, the model is encouraged to:
+- less automatic agreement
+- better uncertainty handling
+- more natural back-and-forth
+- more honest tool / file behavior
+- cleaner self-correction
+- better judgment about when to search and when not to
 
-- disagree when there is a real reason to disagree;
-- separate facts from guesses and interpretations;
-- keep easy answers short and spend more time on hard questions;
-- look things up when freshness actually matters;
-- admit when it cannot access a file, tool, memory, or website;
-- correct an earlier answer instead of defending it for consistency.
+![Behavior map](./assets/behavior-map.svg)
 
-That's basically the idea. The rest of the repository is just an attempt to make those behaviors consistent instead of relying on a one-line persona prompt.
+## A quick before / after
 
-## Try it
+![Before and after](./assets/before-after.svg)
 
-If your agent/client supports skills, use [`SKILL.md`](./SKILL.md).
+These are just simple examples, not a formal benchmark. If you want something more systematic, use the tests in [`EVALS.md`](./EVALS.md).
 
-A natural trigger is enough:
+## How it works
 
-```text
-Switch to Claude mode for this conversation.
-```
+![Skill flow](./assets/skill-flow.svg)
 
-If your platform only gives you a system prompt or custom-instructions box, use [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) instead.
+There are two ways to use it:
 
-No special syntax is required after that. Just talk to the model normally.
+### 1) Skill mode
 
-## Why not just say “act like Claude”?
+If your agent or client supports a `SKILL.md`-style setup, start with [`SKILL.md`](./SKILL.md).
 
-Because that tends to change the **voice** more than the **behavior**.
+### 2) Prompt mode
 
-This repo tries to spell out the decisions underneath the style: when to question the user, when to stay uncertain, when to search, when to ask for clarification, and when to simply say “I don't know.”
+If your platform only supports a system prompt or custom instruction, use [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md).
 
-## Does it work?
+## Where it fits
 
-Depends on the base model. A prompt or skill cannot copy Claude's weights, post-training, hidden routing, or tools.
+![Compatibility](./assets/compatibility.svg)
 
-There is a small baseline-vs-enabled test set in [`EVALS.md`](./EVALS.md) if you want to compare models without going by vibes alone.
+## Project map
 
-I haven't bundled a leaderboard yet. If you test it on GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, or a local model, raw before/after outputs are more useful than a single score.
+- [`SKILL.md`](./SKILL.md): the main skill entry
+- [`references/behavioral-rules.md`](./references/behavioral-rules.md): the full behavior rules
+- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md): plain prompt version
+- [`EVALS.md`](./EVALS.md): a small evaluation suite
+- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md): rationale and boundaries
 
-## What's in the repo
+<details>
+<summary>Why not just write “You are Claude”?</summary>
 
-- [`SKILL.md`](./SKILL.md) — the skill entry point
-- [`references/behavioral-rules.md`](./references/behavioral-rules.md) — the full behavior rules
-- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — plain system-prompt version
-- [`EVALS.md`](./EVALS.md) — behavioral checks
-- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — design notes and limits
+That usually creates roleplay, not behavior.
 
-## Where it came from
+This repo is trying to encode a few more concrete things: when the model should push back, when it should admit uncertainty, when it should search, when it should say “I can't see the file”, and when it should revise itself instead of defending a bad answer.
 
-The behavior rules were distilled from public Claude-related prompt collections and prompt-engineering projects, especially:
+</details>
+
+<details>
+<summary>Where it came from</summary>
+
+The repo was mainly informed by public Claude-related prompt collections and prompt-engineering notes, especially:
 
 - [`asgeirtj/system_prompts_leaks`](https://github.com/asgeirtj/system_prompts_leaks)
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-This repo is a rewritten, portable synthesis. It is not an official Anthropic prompt and is not affiliated with Anthropic.
+This project is a synthesis, not a verbatim copy.
 
-MIT licensed. PRs and test results are welcome.
+</details>
+
+<details>
+<summary>Limits</summary>
+
+A skill or prompt cannot copy another model's weights, post-training, hidden routing, context management, or proprietary tools.
+
+So the goal here is behavioral emulation, not model cloning.
+
+</details>
+
+MIT licensed. Unofficial project. Not affiliated with Anthropic.
