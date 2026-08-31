@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Behavior map">
+  <rect width="1200" height="520" fill="#f7f5ef"/>
+  <text x="70" y="55" fill="#1f2937" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700">What the skill is trying to improve</text>
+  <text x="70" y="86" fill="#6b7280" font-family="Arial, Helvetica, sans-serif" font-size="18">This is a qualitative map, not a benchmark chart.</text>
+  <g transform="translate(320 275)">
+    <polygon points="0,-145 138,-45 85,118 -85,118 -138,-45" fill="#efe9db" stroke="#d1c7af" stroke-width="2"/>
+    <polygon points="0,-110 105,-34 64,90 -64,90 -105,-34" fill="#ddd6c1" opacity="0.65"/>
+    <polygon points="0,-130 120,-40 76,102 -76,102 -120,-40" fill="#c9d8c5" opacity="0.88"/>
+    <line x1="0" y1="0" x2="0" y2="-145" stroke="#9ca3af"/><line x1="0" y1="0" x2="138" y2="-45" stroke="#9ca3af"/><line x1="0" y1="0" x2="85" y2="118" stroke="#9ca3af"/><line x1="0" y1="0" x2="-85" y2="118" stroke="#9ca3af"/><line x1="0" y1="0" x2="-138" y2="-45" stroke="#9ca3af"/>
+    <text x="0" y="-165" text-anchor="middle" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Independent judgment</text>
+    <text x="170" y="-48" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Uncertainty handling</text>
+    <text x="103" y="145" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Self-correction</text>
+    <text x="-225" y="145" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Tool honesty</text>
+    <text x="-260" y="-48" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Conversation quality</text>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="17">
+    <rect x="760" y="152" width="300" height="150" rx="16" fill="#ffffff" stroke="#d1d5db"/>
+    <text x="785" y="184" fill="#111827" font-weight="700">How to read this</text>
+    <text x="785" y="214" fill="#374151">• It is not claiming measured scores.</text>
+    <text x="785" y="244" fill="#374151">• It shows the main behavior targets.</text>
+    <text x="785" y="274" fill="#374151">• Use EVALS.md if you want to test</text>
+    <text x="800" y="300" fill="#374151">whether those changes actually happen.</text>
+  </g>
+</svg>
