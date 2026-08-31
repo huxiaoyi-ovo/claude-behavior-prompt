@@ -10,11 +10,11 @@ A small behavior layer for making non-Claude models feel a little more like Clau
   <img src="./assets/cover.svg" alt="Claude Behavior Skill doodle cover" width="100%" />
 </p>
 
-Most “Claude-style” prompts mainly copy the tone. This repo is more interested in the decisions underneath it: when to disagree, when to stay uncertain, when to search, when to admit a tool or file is unavailable, and when to correct an earlier answer.
+Many “Claude-style” prompts mainly copy the tone. This repo is more interested in the decisions underneath it: when to disagree, when to stay uncertain, when to search, when to admit a tool or file is unavailable, and when to correct an earlier answer.
 
 ## Quick start
 
-**If your agent supports skills:** use [`SKILL.md`](./SKILL.md).
+**If your agent supports skills:** install this repository as a skill bundle so `SKILL.md` and `references/` stay together.
 
 **If it only supports system/custom instructions:** use [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md).
 
@@ -26,14 +26,14 @@ Switch to Claude mode for this conversation.
 
 ## What changes
 
-| Situation | Typical default | With this skill |
+| Situation | Common failure mode | With this skill |
 | --- | --- | --- |
-| The user sounds very confident | Often follows the premise | Checks the premise before agreeing |
-| Evidence is incomplete | Tends to give a clean answer anyway | Keeps uncertainty visible |
-| A file/tool is unavailable | May infer more than it should | Says clearly what it cannot access |
-| An earlier answer was wrong | Can defend the previous answer | Corrects it directly |
-| The question depends on fresh information | May answer from memory | Looks it up when tools are available |
-| The task is simple | Can over-explain | Keeps the answer short unless depth is useful |
+| The user sounds very confident | Follows the premise too readily | Checks the premise before agreeing |
+| Evidence is incomplete | Gives a cleaner conclusion than the evidence supports | Keeps uncertainty visible |
+| A file/tool is unavailable | Infers more than it should | Says clearly what it cannot access |
+| An earlier answer was wrong | Tries to preserve the previous answer | Corrects it directly |
+| The question depends on fresh information | Answers from memory | Looks it up when tools are available |
+| The task is simple | Over-explains | Keeps the answer short unless depth is useful |
 
 That table describes the intended behavior, not benchmark results. For actual testing, see [`EVALS.md`](./EVALS.md).
 
@@ -57,7 +57,7 @@ The rules are model-agnostic. They are mainly intended for:
 
 `GPT / ChatGPT` · `Grok` · `Gemini` · `DeepSeek` · `Qwen` · `GLM` · `Kimi` · `local/open-weight models`
 
-The stronger the base model, the more convincing the behavior shaping tends to be.
+Results still depend heavily on the base model and the host platform.
 
 ## Files
 
@@ -65,6 +65,7 @@ The stronger the base model, the more convincing the behavior shaping tends to b
 - [`references/behavioral-rules.md`](./references/behavioral-rules.md) — full behavior rules
 - [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — plain prompt version
 - [`EVALS.md`](./EVALS.md) — behavior checks
+- [`SOURCES.md`](./SOURCES.md) — source lineage and evidence notes
 - [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — design notes and limits
 
 <details>
@@ -76,7 +77,7 @@ The behavior rules were distilled from public Claude-related prompt collections 
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-This repo is a rewritten, portable synthesis rather than a verbatim copy.
+This repo is a rewritten, portable synthesis rather than a verbatim copy. See [`SOURCES.md`](./SOURCES.md) for the provenance caveats.
 
 </details>
 
