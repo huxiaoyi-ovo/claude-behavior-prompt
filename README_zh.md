@@ -10,11 +10,11 @@
   <img src="./assets/cover.svg" alt="Claude Behavior Skill 涂鸦封面" width="100%" />
 </p>
 
-很多所谓的“Claude 风格 Prompt”主要是在模仿语气。这个仓库更在意语气下面的判断方式：什么时候该反驳，什么时候该保留不确定性，什么时候该检索，什么时候应该明确说自己没有访问到文件或工具，以及什么时候该直接纠正前面的错误。
+很多“Claude 风格 Prompt”主要是在模仿语气。这个仓库更在意语气下面的判断方式：什么时候该反驳，什么时候该保留不确定性，什么时候该检索，什么时候应该明确说自己没有访问到文件或工具，以及什么时候该直接纠正前面的错误。
 
 ## 快速开始
 
-**如果你的 Agent 支持 Skill：** 用 [`SKILL.md`](./SKILL.md)。
+**如果你的 Agent 支持 Skill：** 把整个仓库作为一个 Skill bundle 使用，确保 `SKILL.md` 和 `references/` 保持在一起。
 
 **如果平台只有 System Prompt / Custom Instructions：** 用 [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)。
 
@@ -26,14 +26,14 @@
 
 ## 会有什么区别
 
-| 场景 | 常见默认表现 | 加载 Skill 后 |
+| 场景 | 常见问题 | 加载 Skill 后 |
 | --- | --- | --- |
-| 用户语气非常自信 | 容易顺着前提往下说 | 先检查前提，再决定是否同意 |
-| 证据并不完整 | 仍然倾向给出一个干净结论 | 把不确定性保留下来 |
-| 文件 / 工具不可用 | 容易推断过头 | 明确说自己实际能访问什么 |
-| 前面的回答错了 | 容易为了前后一致继续解释 | 直接改正 |
-| 问题依赖最新信息 | 可能凭已有记忆回答 | 有工具时主动检索 |
-| 问题本身很简单 | 容易说太多 | 没必要就保持简短 |
+| 用户语气非常自信 | 过早接受用户前提 | 先检查前提，再决定是否同意 |
+| 证据并不完整 | 给出比证据更确定的结论 | 把不确定性保留下来 |
+| 文件 / 工具不可用 | 推断超过实际访问能力 | 明确说自己实际能访问什么 |
+| 前面的回答错了 | 为了前后一致继续解释 | 直接改正 |
+| 问题依赖最新信息 | 凭已有记忆回答 | 有工具时主动检索 |
+| 问题本身很简单 | 解释过多 | 没必要就保持简短 |
 
 这张表描述的是**目标行为**，不是 benchmark 结果。想实际对比，可以看 [`EVALS.md`](./EVALS.md)。
 
@@ -57,7 +57,7 @@ SKILL.md
 
 `GPT / ChatGPT` · `Grok` · `Gemini` · `DeepSeek` · `Qwen` · `GLM` · `Kimi` · `本地 / 开源模型`
 
-通常底模越强，行为塑造越明显。
+实际效果仍然很大程度取决于底模和宿主平台。
 
 ## 文件
 
@@ -65,6 +65,7 @@ SKILL.md
 - [`references/behavioral-rules.md`](./references/behavioral-rules.md) — 完整行为规则
 - [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — 普通 Prompt 版本
 - [`EVALS.md`](./EVALS.md) — 行为测试
+- [`SOURCES.md`](./SOURCES.md) — 来源和证据说明
 - [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — 设计说明和边界
 
 <details>
@@ -76,7 +77,7 @@ SKILL.md
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-这个仓库是重新整理后的可迁移版本，不是逐字复制。
+这个仓库是重新整理后的可迁移版本，不是逐字复制。具体来源边界见 [`SOURCES.md`](./SOURCES.md)。
 
 </details>
 
