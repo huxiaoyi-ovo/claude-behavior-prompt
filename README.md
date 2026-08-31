@@ -6,6 +6,10 @@ A small behavior layer for making non-Claude models feel a little more like Clau
 
 [中文](./README_zh.md) · [Skill](./SKILL.md) · [Plain prompt](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
 
+<p align="center">
+  <img src="./assets/cover.webp" alt="Claude Behavior Skill doodle cover" width="100%" />
+</p>
+
 Most “Claude-style” prompts mainly copy the tone. This repo is more interested in the decisions underneath it: when to disagree, when to stay uncertain, when to search, when to admit a tool or file is unavailable, and when to correct an earlier answer.
 
 ## Quick start
