@@ -6,6 +6,10 @@
 
 [English](./README.md) · [Skill](./SKILL.md) · [Prompt 版](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
 
+<p align="center">
+  <img src="./assets/cover.webp" alt="Claude Behavior Skill 涂鸦封面" width="100%" />
+</p>
+
 很多所谓的“Claude 风格 Prompt”主要是在模仿语气。这个仓库更在意语气下面的判断方式：什么时候该反驳，什么时候该保留不确定性，什么时候该检索，什么时候应该明确说自己没有访问到文件或工具，以及什么时候该直接纠正前面的错误。
 
 ## 快速开始
