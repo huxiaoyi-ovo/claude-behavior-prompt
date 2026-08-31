@@ -1,85 +1,87 @@
 # Claude Behavior Skill
 
-一个小实验：让非 Claude 模型在对话时，尽量更像 Claude 一点。
+给非 Claude 模型加一层更像 Claude 的行为风格。
 
-主要面向 GPT、Grok、Gemini、DeepSeek、Qwen、GLM、Kimi，以及本地 / 开源模型。
-它**不会**把这些模型真的变成 Claude，目标只是给它们加一层更好的行为风格。
+**GPT / Grok / Gemini / DeepSeek / Qwen / GLM / Kimi / 本地模型**
 
-[English](./README.md) · [SKILL.md](./SKILL.md) · [Prompt 版](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
+[English](./README.md) · [Skill](./SKILL.md) · [Prompt 版](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
 
-![Banner](./assets/banner.svg)
+很多所谓的“Claude 风格 Prompt”主要是在模仿语气。这个仓库更在意语气下面的判断方式：什么时候该反驳，什么时候该保留不确定性，什么时候该检索，什么时候应该明确说自己没有访问到文件或工具，以及什么时候该直接纠正前面的错误。
 
-## 它主要想改善什么
+## 快速开始
 
-- 少一点无脑迎合
-- 更好的不确定性表达
-- 更自然的来回对话
-- 更诚实的工具 / 文件处理
-- 更直接的自我纠错
-- 更好的“该不该检索”判断
+**如果你的 Agent 支持 Skill：** 用 [`SKILL.md`](./SKILL.md)。
 
-![Behavior map](./assets/behavior-map.svg)
+**如果平台只有 System Prompt / Custom Instructions：** 用 [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)。
 
-## 一个很直观的前后对比
+之后正常聊天就行。触发可以很简单：
 
-![Before and after](./assets/before-after.svg)
+```text
+这段对话切换到 Claude 模式。
+```
 
-这里只是示意，不算正式 benchmark。想更系统地测，可以直接看 [`EVALS.md`](./EVALS.md)。
+## 会有什么区别
 
-## 它是怎么工作的
+| 场景 | 常见默认表现 | 加载 Skill 后 |
+| --- | --- | --- |
+| 用户语气非常自信 | 容易顺着前提往下说 | 先检查前提，再决定是否同意 |
+| 证据并不完整 | 仍然倾向给出一个干净结论 | 把不确定性保留下来 |
+| 文件 / 工具不可用 | 容易推断过头 | 明确说自己实际能访问什么 |
+| 前面的回答错了 | 容易为了前后一致继续解释 | 直接改正 |
+| 问题依赖最新信息 | 可能凭已有记忆回答 | 有工具时主动检索 |
+| 问题本身很简单 | 容易说太多 | 没必要就保持简短 |
 
-![Skill flow](./assets/skill-flow.svg)
+这张表描述的是**目标行为**，不是 benchmark 结果。想实际对比，可以看 [`EVALS.md`](./EVALS.md)。
 
-你可以用两种方式加载它：
+## 为什么做成 Skill
 
-### 1）Skill 模式
+因为一句“请像 Claude 一样回答”，更容易改掉模型的**说话方式**，不一定能改掉它的**判断方式**。
 
-如果你的 Agent 或客户端支持 `SKILL.md` 这种方式，就从 [`SKILL.md`](./SKILL.md) 开始。
+Skill 把触发层和完整行为规则分开：
 
-### 2）Prompt 模式
+```text
+SKILL.md
+└── references/
+    └── behavioral-rules.md
+```
 
-如果你的平台只支持 System Prompt / Custom Instruction，就用 [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)。
+支持 Skill 的 Agent 可以按需加载；不支持 Skill 的平台则直接使用普通 Prompt 版本。
 
-## 适合放到哪些模型上
+## 支持哪些模型
 
-![Compatibility](./assets/compatibility.svg)
+行为规则本身不绑定具体厂商，主要面向：
 
-## 仓库里有什么
+`GPT / ChatGPT` · `Grok` · `Gemini` · `DeepSeek` · `Qwen` · `GLM` · `Kimi` · `本地 / 开源模型`
 
-- [`SKILL.md`](./SKILL.md)：Skill 主入口
-- [`references/behavioral-rules.md`](./references/behavioral-rules.md)：完整行为规则
-- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)：纯 Prompt 版本
-- [`EVALS.md`](./EVALS.md)：一套简单的行为测试
-- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md)：设计思路和边界
+通常底模越强，行为塑造越明显。
+
+## 文件
+
+- [`SKILL.md`](./SKILL.md) — Skill 入口
+- [`references/behavioral-rules.md`](./references/behavioral-rules.md) — 完整行为规则
+- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — 普通 Prompt 版本
+- [`EVALS.md`](./EVALS.md) — 行为测试
+- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — 设计说明和边界
 
 <details>
-<summary>为什么不直接写“你就是 Claude”？</summary>
+<summary>来源</summary>
 
-因为那样通常更像角色扮演，不像真正的行为塑造。
-
-这个仓库更想写清楚几件具体的事：什么时候该反驳，什么时候该承认不确定，什么时候该检索，什么时候该说“我没看到文件”，以及什么时候该直接改正自己的错误。
-
-</details>
-
-<details>
-<summary>它主要参考了什么</summary>
-
-主要参考了一些公开的 Claude prompt / prompt-engineering 项目，比如：
+主要参考了一些公开的 Claude prompt / prompt-engineering 项目：
 
 - [`asgeirtj/system_prompts_leaks`](https://github.com/asgeirtj/system_prompts_leaks)
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-这个项目是整合和抽象，不是逐字复制。
+这个仓库是重新整理后的可迁移版本，不是逐字复制。
 
 </details>
 
 <details>
 <summary>局限</summary>
 
-Skill 或 Prompt 复制不了另一个模型的权重、后训练、隐藏路由、上下文管理和专有工具。
+Skill / Prompt 无法复制 Claude 的权重、后训练、隐藏路由、上下文管理、推理算力和专有工具。
 
-所以这里追求的是行为层模仿，不是模型克隆。
+这里追求的是行为层模仿，不是模型克隆。
 
 </details>
 
