@@ -3,137 +3,72 @@
 </p>
 
 <p align="center">
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" alt="MIT License"></a>
-  <a href="./SKILL.md"><img src="https://img.shields.io/badge/type-Agent%20Skill-8b5cf6?style=flat-square" alt="Agent Skill"></a>
-  <a href="./EVALS.md"><img src="https://img.shields.io/badge/evals-15%20behavior%20tests-f59e0b?style=flat-square" alt="Behavioral Evals"></a>
-  <img src="https://img.shields.io/badge/status-experimental-64748b?style=flat-square" alt="Experimental">
+  <a href="./README.md">English</a> · <a href="./SKILL.md">Skill</a> · <a href="./CLAUDE_STYLE_PROMPT.md">Prompt</a> · <a href="./EVALS.md">测试</a>
 </p>
 
-<p align="center">
-  <b>给非 Claude 模型加上一层更像 Claude 的交互行为。</b><br/>
-  更克制、更独立、更会质疑，也更自然。
-</p>
+这是一个很简单的小实验：**让非 Claude 模型在聊天时，更像 Claude 一点。**
 
-<p align="center">
-  <a href="./README.md">English</a> ·
-  <a href="./SKILL.md">Skill</a> ·
-  <a href="./CLAUDE_STYLE_PROMPT.md">Prompt</a> ·
-  <a href="./EVALS.md">Evals</a>
-</p>
+这里说的“像”不是让模型假装自己就是 Claude，而是尽量复现一些比较容易感知到的交互习惯：少一点迎合，对不确定性更敏感，愿意指出问题，回答也更克制一些。
 
----
+主要面向 `GPT / ChatGPT`、`Grok`、`Gemini`、`DeepSeek`、`Qwen`、`GLM`、`Kimi` 和各种本地模型。
 
-## ✨ 它能做什么
+## 大概会变成什么样
 
-这个项目给其他大模型增加一层 **Claude-like behavioral layer**。
+开了这个 Skill 之后，模型会更倾向于：
 
-- 🧠 **独立判断** —— 少迎合、少无脑赞同
-- 🎯 **不确定性校准** —— 分清事实、推断和猜测
-- 💬 **自然对话** —— 简单问题简答，复杂问题自然深入
-- 🔎 **主动查证** —— 涉及最新信息时，有工具就去检索
-- 🛠️ **工具诚实** —— 不假装浏览过网页、读过文件或调用过工具
-- 🔄 **直接纠错** —— 错了就改，不为了前后一致硬保旧答案
+- 真有问题时直接指出来，不因为用户很自信就跟着赞同；
+- 分清事实、推断、解释和猜测；
+- 简单问题少说一点，复杂问题再展开；
+- 涉及最新信息时，有检索能力就去查；
+- 没看过文件、没调用工具、没访问到网页时就明确说没有；
+- 前面答错了就直接改，不为了“前后一致”硬圆。
 
-### 主要面向
+差不多就是这些。仓库里剩下的内容，只是在想办法把这些习惯写得更稳定一点，而不是靠一句“请像 Claude 一样回答”。
 
-`GPT / ChatGPT` · `Grok` · `Gemini` · `DeepSeek` · `Qwen` · `GLM` · `Kimi` · `本地模型`
+## 怎么用
 
-> 它不会把别的模型真的变成 Claude。它塑造的是**可观察的交互行为**，底层模型身份和真实能力保持不变。
+如果你的 Agent / 客户端支持 Skill，直接用 [`SKILL.md`](./SKILL.md)。
 
----
-
-## 🚀 怎么用
-
-### 方式 A — Skill 模式
-
-如果你的 Agent / 客户端支持 `SKILL.md` 风格的 Skill，把这个仓库作为 Skill 加载即可，入口是：
-
-```text
-SKILL.md
-```
-
-然后自然触发：
+触发也不用搞得很复杂，比如：
 
 ```text
 这段对话切换到 Claude 模式。
 ```
 
-Skill 会继续读取完整行为规则：[`references/behavioral-rules.md`](./references/behavioral-rules.md)
+如果平台只有 System Prompt / Custom Instructions，就用 [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)。
 
-### 方式 B — Prompt 模式
+之后正常聊天就行，不需要每句话都重新提醒。
 
-如果你的平台只支持 System Prompt / Custom Instruction，直接复制：
+## 为什么不直接写“你就是 Claude”？
 
-**[`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)**
+因为那通常更容易改掉模型的**说话语气**，但不一定真的改变它的**判断方式**。
 
-放到该平台最高优先级、用户可配置的指令位置即可。
+这个项目更在意下面这些东西：什么时候应该反驳，什么时候应该保持不确定，什么时候应该检索，什么时候值得追问，以及什么时候该直接说“我不知道”。
 
----
+## 到底有没有用
 
-## 🧩 为什么不直接写“你就是 Claude”？
+看底模。
 
-因为那通常只会得到**角色扮演**。
+Skill / Prompt 不可能复制 Claude 的权重、后训练、隐藏路由和工具能力，所以这里做的是行为层塑造，不是模型克隆。
 
-这个项目写的是更具体的行为规则：
+仓库里放了一套 [`EVALS.md`](./EVALS.md)，可以拿同一个模型做“不开 / 开 Skill”的对比。比起单纯说“感觉更像了”，我更希望后面能积累一些原始 before / after 输出。
 
-> 什么时候反驳 · 什么时候检索 · 怎么表达不确定性 · 什么时候需要澄清 · 什么时候主动纠错 · 哪些东西绝不能伪造
+## 文件
 
-所以更容易迁移到不同底模。
+- [`SKILL.md`](./SKILL.md) — Skill 入口
+- [`references/behavioral-rules.md`](./references/behavioral-rules.md) — 完整行为规则
+- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — 普通 Prompt 版本
+- [`EVALS.md`](./EVALS.md) — 行为测试
+- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — 一些设计说明和边界
 
----
+## 来源
 
-## 📦 仓库结构
-
-| 文件 | 用途 |
-|---|---|
-| [`SKILL.md`](./SKILL.md) | 跨模型 Skill 主入口 |
-| [`references/behavioral-rules.md`](./references/behavioral-rules.md) | 完整行为规则 |
-| [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) | System Prompt 兼容版 |
-| [`EVALS.md`](./EVALS.md) | 15 项行为测试 |
-| [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) | 设计思路与边界 |
-
----
-
-## 🧪 到底有没有效果？
-
-不要靠感觉，直接测。
-
-[`EVALS.md`](./EVALS.md) 提供了同一底模 **不开 Skill / 开 Skill** 的对比测试，包括：反迎合、歧义处理、不确定性、纠错、工具诚实、最新信息检索等。
-
-目前仓库还没有预置跨模型 benchmark 结果。欢迎提交可复现结果和原始输出。
-
-<details>
-<summary><b>📚 参考来源与方法</b></summary>
-<br/>
-
-主要参考公开的 Claude prompt / prompt-engineering GitHub 项目：
+主要参考了几个公开的 Claude prompt / prompt-engineering 项目：
 
 - [`asgeirtj/system_prompts_leaks`](https://github.com/asgeirtj/system_prompts_leaks)
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-最终 Skill 是经过**整合、抽象和改写的行为层**，并非逐字复制 Anthropic 的专有系统提示词。
+最终内容做了重新整理和改写，不是 Anthropic 官方 Prompt，也和 Anthropic 没有隶属关系。
 
-更多细节见 [`DESIGN_NOTES.md`](./DESIGN_NOTES.md)。
-
-</details>
-
-<details>
-<summary><b>⚠️ 局限</b></summary>
-<br/>
-
-Skill / Prompt 无法复制另一个模型的权重、后训练、隐藏路由、安全分类器、上下文系统、专有工具和推理算力。
-
-底层模型本身依然很重要。
-
-</details>
-
----
-
-<p align="center">
-  <b>如果它真的让你的模型更好聊了，欢迎点个 ⭐。</b>
-</p>
-
-<p align="center">
-  MIT License · 社区项目 · 与 Anthropic 无关联
-</p>
+MIT License。欢迎提 PR，也欢迎直接拿不同模型来测。
