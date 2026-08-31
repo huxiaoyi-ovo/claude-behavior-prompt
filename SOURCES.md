@@ -10,11 +10,11 @@ We use three levels of evidence:
 
 | Level | Meaning | How it is used |
 |---|---|---|
-| **A — Prompt collection** | Public repositories that claim to contain extracted or reconstructed Claude system prompts | Primary evidence for recurring behavioral rules |
+| **A — Prompt collection** | Public repositories that claim to contain extracted or reconstructed Claude system prompts | Evidence for recurring behavioral rules |
 | **B — Prompt analysis** | Repositories that analyze how Claude system prompts are structured | Used to convert observations into portable instructions |
 | **C — Project synthesis** | Our own deduplication, normalization, and cross-model adaptation | Used only to make the behavior portable; should not be presented as an Anthropic-authored rule |
 
-## Primary sources
+## Primary public references
 
 ### 1. asgeirtj/system_prompts_leaks — Level A
 
@@ -86,7 +86,7 @@ We apply the following transformation:
 
 ## What “Claude-style” means here
 
-In this repository, **Claude-style** refers to a cluster of observable interaction behaviors reconstructed from the public sources above. It does **not** mean:
+In this repository, **Claude-style** refers to a cluster of observable interaction behaviors reconstructed from the public references above. It does **not** mean:
 
 - identical hidden reasoning;
 - identical model weights;
@@ -105,4 +105,4 @@ A new behavioral rule should ideally include:
 3. a model-agnostic formulation;
 4. at least one evaluation prompt that can test whether the rule improves behavior.
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`EVALUATION.md`](./EVALUATION.md).
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`EVALS.md`](./EVALS.md).
