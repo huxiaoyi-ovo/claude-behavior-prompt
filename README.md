@@ -3,137 +3,72 @@
 </p>
 
 <p align="center">
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" alt="MIT License"></a>
-  <a href="./SKILL.md"><img src="https://img.shields.io/badge/type-Agent%20Skill-8b5cf6?style=flat-square" alt="Agent Skill"></a>
-  <a href="./EVALS.md"><img src="https://img.shields.io/badge/evals-15%20behavior%20tests-f59e0b?style=flat-square" alt="Behavioral Evals"></a>
-  <img src="https://img.shields.io/badge/status-experimental-64748b?style=flat-square" alt="Experimental">
+  <a href="./README_zh.md">中文</a> · <a href="./SKILL.md">Skill</a> · <a href="./CLAUDE_STYLE_PROMPT.md">Plain prompt</a> · <a href="./EVALS.md">Tests</a>
 </p>
 
-<p align="center">
-  <b>Give non-Claude models a more Claude-like way of interacting.</b><br/>
-  Warm, critical, calibrated, concise, and much less sycophantic.
-</p>
+A small experiment in making **non-Claude models feel a little more like Claude to talk to**.
 
-<p align="center">
-  <a href="./README_zh.md">中文</a> ·
-  <a href="./SKILL.md">Skill</a> ·
-  <a href="./CLAUDE_STYLE_PROMPT.md">Prompt</a> ·
-  <a href="./EVALS.md">Evals</a>
-</p>
+I don't mean pretending the model *is* Claude. The goal is the part people usually notice in conversation: less automatic agreement, better handling of uncertainty, more willingness to push back, and a calmer response style.
 
----
+It is mainly meant for `GPT / ChatGPT`, `Grok`, `Gemini`, `DeepSeek`, `Qwen`, `GLM`, `Kimi`, and local models.
 
-## ✨ What it does
+## What changes
 
-This project adds a **Claude-like behavioral layer** to other LLMs.
+With the skill enabled, the model is encouraged to:
 
-- 🧠 **Independent judgment** — less automatic agreement and flattery
-- 🎯 **Calibrated uncertainty** — separates facts, inference, and speculation
-- 💬 **Natural conversation** — concise for simple questions, deep when needed
-- 🔎 **Current-info discipline** — searches when recency matters and tools exist
-- 🛠️ **Tool honesty** — never pretends to browse, read files, or call unavailable tools
-- 🔄 **Direct self-correction** — updates wrong answers instead of defending them
+- disagree when there is a real reason to disagree;
+- separate facts from guesses and interpretations;
+- keep easy answers short and spend more time on hard questions;
+- look things up when freshness actually matters;
+- admit when it cannot access a file, tool, memory, or website;
+- correct an earlier answer instead of defending it for consistency.
 
-### Designed for
+That's basically the idea. The rest of the repository is just an attempt to make those behaviors consistent instead of relying on a one-line persona prompt.
 
-`GPT / ChatGPT` · `Grok` · `Gemini` · `DeepSeek` · `Qwen` · `GLM` · `Kimi` · `Local LLMs`
+## Try it
 
-> It does **not** turn another model into Claude. It shapes observable interaction behavior while preserving the host model's real identity and capabilities.
+If your agent/client supports skills, use [`SKILL.md`](./SKILL.md).
 
----
-
-## 🚀 Use it
-
-### Option A — Skill mode
-
-For agents or clients that support `SKILL.md`-style skills, add this repository as a skill and use:
-
-```text
-SKILL.md
-```
-
-Then trigger it naturally:
+A natural trigger is enough:
 
 ```text
 Switch to Claude mode for this conversation.
 ```
 
-The skill loads its detailed behavior rules from [`references/behavioral-rules.md`](./references/behavioral-rules.md).
+If your platform only gives you a system prompt or custom-instructions box, use [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) instead.
 
-### Option B — Prompt mode
+No special syntax is required after that. Just talk to the model normally.
 
-If your platform only supports a system/custom prompt, copy:
+## Why not just say “act like Claude”?
 
-**[`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)**
+Because that tends to change the **voice** more than the **behavior**.
 
-into the highest-priority user-configurable instruction field.
+This repo tries to spell out the decisions underneath the style: when to question the user, when to stay uncertain, when to search, when to ask for clarification, and when to simply say “I don't know.”
 
----
+## Does it work?
 
-## 🧩 Why not just say “You are Claude”?
+Depends on the base model. A prompt or skill cannot copy Claude's weights, post-training, hidden routing, or tools.
 
-Because that mostly creates **roleplay**.
+There is a small baseline-vs-enabled test set in [`EVALS.md`](./EVALS.md) if you want to compare models without going by vibes alone.
 
-This project encodes concrete behavioral decisions instead:
+I haven't bundled a leaderboard yet. If you test it on GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, or a local model, raw before/after outputs are more useful than a single score.
 
-> when to disagree · when to search · how to express uncertainty · how much to clarify · when to correct itself · what never to fabricate
+## What's in the repo
 
-That makes the behavior more portable across different base models.
+- [`SKILL.md`](./SKILL.md) — the skill entry point
+- [`references/behavioral-rules.md`](./references/behavioral-rules.md) — the full behavior rules
+- [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) — plain system-prompt version
+- [`EVALS.md`](./EVALS.md) — behavioral checks
+- [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) — design notes and limits
 
----
+## Where it came from
 
-## 📦 Project map
-
-| File | Purpose |
-|---|---|
-| [`SKILL.md`](./SKILL.md) | Main cross-model skill |
-| [`references/behavioral-rules.md`](./references/behavioral-rules.md) | Full behavior specification |
-| [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) | System-prompt fallback |
-| [`EVALS.md`](./EVALS.md) | 15 behavioral regression tests |
-| [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) | Design rationale and boundaries |
-
----
-
-## 🧪 Does it work?
-
-Don't guess — test it.
-
-[`EVALS.md`](./EVALS.md) contains a baseline-vs-skill suite for anti-sycophancy, ambiguity handling, epistemic calibration, self-correction, tool honesty, current-information retrieval, and more.
-
-No cross-model benchmark result is bundled yet. Reproducible results and raw outputs are welcome.
-
-<details>
-<summary><b>📚 Sources & methodology</b></summary>
-<br/>
-
-The synthesis was informed by public Claude-related prompt collections and prompt-engineering references, especially:
+The behavior rules were distilled from public Claude-related prompt collections and prompt-engineering projects, especially:
 
 - [`asgeirtj/system_prompts_leaks`](https://github.com/asgeirtj/system_prompts_leaks)
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-The final skill is a **portable synthesis and paraphrased behavioral abstraction**, not a verbatim copy of Anthropic proprietary prompts.
+This repo is a rewritten, portable synthesis. It is not an official Anthropic prompt and is not affiliated with Anthropic.
 
-See [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) for more.
-
-</details>
-
-<details>
-<summary><b>⚠️ Limits</b></summary>
-<br/>
-
-A skill or prompt cannot clone another model's weights, post-training, hidden routing, safety classifiers, context stack, proprietary tools, or inference-time compute.
-
-The underlying model still matters a lot.
-
-</details>
-
----
-
-<p align="center">
-  <b>If this makes your model noticeably better to talk to, ⭐ the repo.</b>
-</p>
-
-<p align="center">
-  MIT License · Community project · Not affiliated with Anthropic
-</p>
+MIT licensed. PRs and test results are welcome.
