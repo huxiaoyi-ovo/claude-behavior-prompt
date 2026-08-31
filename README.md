@@ -1,63 +1,99 @@
-# Claude Behavior Prompt
+# Claude Behavior Skill
 
-> A high-fidelity, model-agnostic behavioral prompt for making GPT, Gemini, Grok, local LLMs, and other assistants interact more like Claude.
+> A portable Claude-like behavioral skill for **non-Claude models** — especially GPT/ChatGPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, and local/open-weight LLMs.
 
 **Unofficial. Not affiliated with Anthropic.**
 
-[中文版](./README_zh.md) · [Full Prompt](./CLAUDE_STYLE_PROMPT.md) · [Behavioral Evals](./EVALS.md) · [Design Notes](./DESIGN_NOTES.md)
+[Skill](./SKILL.md) · [Full Behavioral Rules](./references/behavioral-rules.md) · [System-Prompt Version](./CLAUDE_STYLE_PROMPT.md) · [Behavioral Evals](./EVALS.md) · [Design Notes](./DESIGN_NOTES.md) · [中文版](./README_zh.md)
 
-## Why this exists
+## What this project is
 
-Many “make GPT behave like Claude” prompts mostly imitate surface style: warmer wording, more hedging, or a few persona adjectives.
+This project packages a Claude-like interaction layer as a reusable **Skill** for other AI models.
 
-This project targets the deeper **behavioral layer** instead:
+The target is not superficial Claude roleplay. It focuses on transferable behavioral patterns such as:
 
-- when the model should push back;
-- how it handles uncertainty;
-- whether it inherits the user's confidence;
-- how it balances competing interpretations;
-- when it should search for current information;
-- whether it admits missing tool/file access;
-- how aggressively it asks clarifying questions;
-- how response depth scales with task complexity;
-- whether it corrects its own earlier mistakes.
+- anti-sycophancy and independent judgment;
+- calibrated uncertainty and epistemic humility;
+- warm, natural, non-patronizing conversation;
+- constructive disagreement;
+- concise-by-default but depth-sensitive answers;
+- balanced treatment of contested questions;
+- current-information retrieval when needed;
+- tool and source honesty;
+- direct correction of earlier mistakes;
+- stable behavior across long conversations.
 
-The result is a portable system prompt built from behavioral rules rather than “You are Claude” roleplay.
+The underlying host remains GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, or whatever model is actually running. The skill must never falsely claim the model has become Claude or is using Anthropic-only capabilities.
 
-## What it tries to reproduce
+## Why a Skill instead of one giant prompt?
 
-- Helpful-by-default interaction stance
-- Warm but non-sycophantic tone
-- Constructive disagreement and independent judgment
-- Proportional depth: concise for simple tasks, deep for hard ones
-- Strong uncertainty calibration and epistemic humility
-- Balanced treatment of contested questions
-- Search/retrieval discipline for current information
-- Tool honesty: no simulated calls or fabricated results
-- Natural personalization without forced memory references
-- Long-conversation behavioral stability
-- Restrained refusal behavior without moralizing
-- Natural formatting rather than template-heavy answers
-- Direct correction when prior answers are wrong
+A long system prompt can work, but it consumes context continuously and mixes activation logic with detailed behavior.
 
-## Quick start
+The Skill version uses progressive disclosure:
 
-Copy [`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md) into the highest-priority **user-configurable** instruction field your model supports:
+```text
+SKILL.md
+└── references/
+    └── behavioral-rules.md
+```
 
-- **ChatGPT / custom GPT / API:** system or developer instructions where available
-- **Gemini / AI Studio:** system instruction
-- **Grok / compatible clients:** system prompt / custom instruction
-- **Local LLMs:** system message in your chat template
+`SKILL.md` contains activation logic and core invariants. The full behavioral specification is loaded only when the skill is invoked.
 
-Then talk to the model normally.
+This makes the project easier to reuse in agent frameworks while preserving a standalone prompt version for platforms that do not support skills.
 
-> The host platform's real system policies, identity, tool access, and capabilities still take precedence. This prompt should never make a model falsely claim to be Claude or pretend it has Anthropic-only tools.
+## Primary target models
+
+This repository is primarily intended for **non-Claude AI systems**:
+
+| Model family | Intended use |
+|---|---|
+| GPT / ChatGPT / Codex-style agents | Skill, project instruction, system/developer prompt |
+| Grok | Custom/system instruction or compatible agent skill |
+| Gemini | System instruction, Gem/agent instruction, reusable skill layer |
+| DeepSeek | System prompt or agent framework skill |
+| Qwen | System prompt or compatible agent framework |
+| GLM | System/custom instruction or agent framework |
+| Kimi | System/custom instruction or agent framework |
+| Local/open-weight LLMs | System message or reusable skill in an agent framework |
+
+Exact installation depends on the client or agent runtime. The behavioral layer itself is model-agnostic.
+
+## Quick start — Skill
+
+Use the repository as a reusable agent skill where your environment supports `SKILL.md`-style modules.
+
+The entry point is:
+
+[`SKILL.md`](./SKILL.md)
+
+When invoked, it loads:
+
+[`references/behavioral-rules.md`](./references/behavioral-rules.md)
+
+Typical trigger language includes:
+
+- “Switch to Claude mode.”
+- “Use the Claude-like behavior skill.”
+- “Respond more like Claude.”
+- “Apply the behavioral-emulation skill for this conversation.”
+
+The skill is intentionally named `behavioral-emulation` internally rather than using `claude` in the skill identifier, while the repository and description make the intended behavior explicit.
+
+## Quick start — plain system prompt
+
+If your platform does not support skills, use:
+
+[`CLAUDE_STYLE_PROMPT.md`](./CLAUDE_STYLE_PROMPT.md)
+
+Place it in the highest-priority **user-configurable** instruction field available to you.
+
+> The host platform's actual system policies, identity, tool access, and capabilities always take precedence.
 
 ## Does it actually work?
 
-That should be measured, not assumed.
+That should be measured rather than assumed.
 
-The repository includes a reproducible baseline-vs-prompted suite in [`EVALS.md`](./EVALS.md). It tests observable behavior including:
+[`EVALS.md`](./EVALS.md) contains a baseline-vs-skill evaluation suite covering:
 
 - anti-sycophancy;
 - correction of false premises;
@@ -70,19 +106,19 @@ The repository includes a reproducible baseline-vs-prompted suite in [`EVALS.md`
 - emotional boundaries;
 - partial-refusal quality.
 
-Run the same base model with and without the prompt, keep settings fixed, and publish the raw outputs alongside scores.
+For a meaningful test, compare the **same base model with and without the skill** while keeping model version, reasoning settings, tools, and temperature fixed.
 
-**No benchmark result is bundled yet.** Contributions with reproducible cross-model results are especially welcome.
+**No benchmark result is bundled yet.** Reproducible results on GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, and local models are especially welcome.
 
 ## Design principle
 
-This project intentionally avoids prompts like:
+This project intentionally avoids instructions like:
 
 > “You are Claude. Think exactly like Claude Opus.”
 
-That instruction mostly encourages roleplay.
+That mostly encourages identity roleplay.
 
-The prompt here encodes **observable decision rules and behavioral constraints** instead: when to push back, when to search, how to represent uncertainty, how much clarification to request, what not to fabricate, and when to revise a previous answer.
+The skill instead encodes **observable behavioral decisions**: when to push back, when to retrieve current information, how to represent uncertainty, how much clarification to request, how to avoid sycophancy, what not to fabricate, and when to revise an earlier answer.
 
 See [`DESIGN_NOTES.md`](./DESIGN_NOTES.md) for the rationale and limitations.
 
@@ -94,13 +130,13 @@ The synthesis was informed primarily by public GitHub repositories that collect 
 - [`Piebald-AI/claude-code-system-prompts`](https://github.com/Piebald-AI/claude-code-system-prompts)
 - [`tjennychen/writing-system-prompts`](https://github.com/tjennychen/writing-system-prompts)
 
-The final prompt is a **portable synthesis and paraphrased behavioral abstraction**, not a verbatim copy of Anthropic proprietary prompts.
+The final skill is a **portable synthesis and paraphrased behavioral abstraction**, not a verbatim copy of Anthropic proprietary prompts.
 
-Public prompt collections can have imperfect provenance. This project therefore treats them as behavioral evidence and design references, not as an authenticated specification of Anthropic internals.
+Public prompt collections can have imperfect provenance, so they are treated as behavioral evidence and design references rather than an authenticated specification of Anthropic internals.
 
 ## What this cannot reproduce
 
-A prompt cannot clone another model's:
+A skill cannot clone another model's:
 
 - weights;
 - post-training;
@@ -111,24 +147,25 @@ A prompt cannot clone another model's:
 - inference-time compute;
 - proprietary tool implementation.
 
-This project aims for **behavioral emulation**, not model cloning.
+The goal is **behavioral emulation**, not model cloning.
 
-The underlying base model still matters a lot.
+The quality of the underlying base model still matters substantially.
 
 ## Project status
 
 **Experimental / early-stage.**
 
-The behavioral prompt is usable today, but rigorous model-by-model results are still being collected. The project should become more credible as contributors publish raw eval outputs and identify rules that can be shortened without losing behavior.
+The skill is usable today, but rigorous model-by-model results are still being collected.
 
 ## Contributing
 
-PRs are welcome. Useful contributions include:
+PRs are welcome. High-value contributions include:
 
+- before/after outputs on GPT, Grok, Gemini, DeepSeek, Qwen, GLM, Kimi, or local models;
 - behavioral rules grounded in public evidence;
-- before/after outputs across different base models;
 - shorter variants that preserve behavior;
-- regression tests for sycophancy, ambiguity, uncertainty, correction, and tool honesty;
+- additional regression tests;
+- adapters for popular agent/skill runtimes;
 - reproducible benchmark runs using [`EVALS.md`](./EVALS.md).
 
 Please avoid unverifiable claims about private model internals.
