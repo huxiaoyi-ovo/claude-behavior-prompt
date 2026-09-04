@@ -98,6 +98,10 @@ The goal here is behavioral emulation, not model cloning.
 
 </details>
 
+## Repository Activity
+
+![Repobeats analytics image](https://repobeats.axiom.co/api/embed/eb4ece5d1ec951fa3a2ccec7c4d7cb731ce9a475.svg)
+
 ## Contributors
 
 <a href="https://github.com/huxiaoyi-ovo/claude-behavior-prompt/graphs/contributors">
