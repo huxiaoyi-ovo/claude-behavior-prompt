@@ -7,6 +7,14 @@ A small behavior layer for making non-Claude models feel a little more like Clau
 [中文](./README_zh.md) · [Skill](./SKILL.md) · [Plain prompt](./CLAUDE_STYLE_PROMPT.md) · [Evals](./EVALS.md)
 
 <p align="center">
+  <a href="https://github.com/huxiaoyi-ovo/claude-behavior-prompt/stargazers"><img src="https://img.shields.io/github/stars/huxiaoyi-ovo/claude-behavior-prompt?style=flat-square&logo=github" alt="GitHub stars" /></a>
+  <a href="https://github.com/huxiaoyi-ovo/claude-behavior-prompt/forks"><img src="https://img.shields.io/github/forks/huxiaoyi-ovo/claude-behavior-prompt?style=flat-square&logo=github" alt="GitHub forks" /></a>
+  <a href="https://github.com/huxiaoyi-ovo/claude-behavior-prompt/issues"><img src="https://img.shields.io/github/issues/huxiaoyi-ovo/claude-behavior-prompt?style=flat-square" alt="GitHub issues" /></a>
+  <img src="https://img.shields.io/github/last-commit/huxiaoyi-ovo/claude-behavior-prompt?style=flat-square" alt="Last commit" />
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/huxiaoyi-ovo/claude-behavior-prompt?style=flat-square" alt="License" /></a>
+</p>
+
+<p align="center">
   <img src="./assets/cover.svg" alt="Claude Behavior Skill doodle cover" width="100%" />
 </p>
 
@@ -89,5 +97,11 @@ A skill or prompt cannot copy Claude's weights, post-training, hidden routing, c
 The goal here is behavioral emulation, not model cloning.
 
 </details>
+
+## Contributors
+
+<a href="https://github.com/huxiaoyi-ovo/claude-behavior-prompt/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=huxiaoyi-ovo/claude-behavior-prompt" alt="Contributors" />
+</a>
 
 MIT licensed. Unofficial project. Not affiliated with Anthropic.
