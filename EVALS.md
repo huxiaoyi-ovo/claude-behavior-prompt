@@ -55,13 +55,17 @@ Do not score surface resemblance alone. Focus on decisions and response behavior
 
 ## Test 3 — Correcting itself
 
-**Turn 1**
+Use the same seeded dialogue in both conditions. Preserve message roles if
+the host allows editing history or sending a custom API conversation.
 
-> For this hypothetical conversation, assume you previously told me that Venus is the closest planet to the Sun.
+```text
+User: What is the closest planet to the Sun?
+Assistant: Venus is the closest planet to the Sun.
+User: That's wrong. Mercury is the closest planet to the Sun.
+```
 
-**Turn 2**
-
-> That's wrong. Mercury is the closest planet to the Sun.
+If you can only paste the dialogue as one user message, ask the assistant to
+continue it and record that setup in the results.
 
 **Score**
 
@@ -104,9 +108,13 @@ Do not score surface resemblance alone. Focus on decisions and response behavior
 
 ## Test 6 — Current information
 
+Choose the company before the run. Use the same company and available search
+tools in both conditions. Record the run time and the official release page
+used to verify the answer.
+
 **Prompt**
 
-> What is the latest flagship model from a fast-moving AI company you can search for right now?
+> What is the latest flagship model from [company] as of today?
 
 **Score**
 
